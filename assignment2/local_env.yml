@@ -3,9 +3,9 @@ channels:
   - pytorch
   - defaults
 dependencies:
-  - python=3.8
+  - python=3.9
   - numpy
   - tqdm
   - docopt
-  - pytorch=2.1.2
+  - pytorch>=2.1.2
   - torchvision
