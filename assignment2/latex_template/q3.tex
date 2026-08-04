@@ -39,24 +39,24 @@ On each step, your parser will decide among the three transitions using a neural
     \ifans{
         \begin{adjustwidth}{-1cm}{}
             \begin{tabularx}{\linewidth}{ X | X | l | l}
-                Stack& Buffer& New dependency& Transition\\ \hline
-                [ROOT]                 & [I, presented, my, findings, at, the, NLP, conference] &                 & Initial Configuration \\
-                $[$ROOT, I]            & [presented, my, findings, at, the, NLP, conference]    &                 & \texttt{SHIFT}        \\
-                $[$ROOT, I, presented] & [my, findings, at, the, NLP, conference]               &                 & \texttt{SHIFT}        \\
-                $[$ROOT, presented]    & [my, findings, at, the, NLP, conference]               & presented$\to$I & \texttt{LEFT-ARC}     \\
-                $[$ROOT, presented, my] & [findings, at, the, NLP, conference]& & \texttt{SHIFT}\\
-                $[$ROOT, presented, my, findings]& [at, the, NLP, conference]& & \texttt{SHIFT}\\
-                $[$ROOT, presented, findings]& [at, the, NLP, conference]& findings $\to$ my& \texttt{LEFT-ARC}\\
-                $[$ROOT, presented]& [at, the, NLP, conference]& presented $\to$ findings& \texttt{RIGHT-ARC}\\
-                $[$ROOT, presented, at]& [the, NLP, conference]& & \texttt{SHIFT}\\
-                $[$ROOT, presented, at, the]& [NLP, conference]& & \texttt{SHIFT}\\
-                $[$ROOT, presented, at, the, NLP]& [conference]& & \texttt{SHIFT}\\
-                $[$ROOT, presented, at, the, NLP, conference]& []& & \texttt{SHIFT}\\
-                $[$ROOT, presented, at, the, conference]& []& conference $\to$ NLP& \texttt{LEFT-ARC}\\
-                $[$ROOT, presented, at, conference]& []& conference $\to$ the& \texttt{LEFT-ARC}\\
-                $[$ROOT, presented, conference]& []& conference $\to$ at& \texttt{LEFT-ARC}\\
-                $[$ROOT, presented]& []& presented $\to$ conference& \texttt{RIGHT-ARC}\\
-                $[$ROOT]& []& ROOT $\to$ presented& \texttt{RIGHT-ARC}\\
+                Stack                                         & Buffer                                                 & New dependency             & Transition            \\ \hline
+                [ROOT]                                        & [I, presented, my, findings, at, the, NLP, conference] &                            & Initial Configuration \\
+                $[$ROOT, I]                                   & [presented, my, findings, at, the, NLP, conference]    &                            & \texttt{SHIFT}        \\
+                $[$ROOT, I, presented]                        & [my, findings, at, the, NLP, conference]               &                            & \texttt{SHIFT}        \\
+                $[$ROOT, presented]                           & [my, findings, at, the, NLP, conference]               & presented$\to$I            & \texttt{LEFT-ARC}     \\
+                $[$ROOT, presented, my]                       & [findings, at, the, NLP, conference]                   &                            & \texttt{SHIFT}        \\
+                $[$ROOT, presented, my, findings]             & [at, the, NLP, conference]                             &                            & \texttt{SHIFT}        \\
+                $[$ROOT, presented, findings]                 & [at, the, NLP, conference]                             & findings $\to$ my          & \texttt{LEFT-ARC}     \\
+                $[$ROOT, presented]                           & [at, the, NLP, conference]                             & presented $\to$ findings   & \texttt{RIGHT-ARC}    \\
+                $[$ROOT, presented, at]                       & [the, NLP, conference]                                 &                            & \texttt{SHIFT}        \\
+                $[$ROOT, presented, at, the]                  & [NLP, conference]                                      &                            & \texttt{SHIFT}        \\
+                $[$ROOT, presented, at, the, NLP]             & [conference]                                           &                            & \texttt{SHIFT}        \\
+                $[$ROOT, presented, at, the, NLP, conference] & []                                                     &                            & \texttt{SHIFT}        \\
+                $[$ROOT, presented, at, the, conference]      & []                                                     & conference $\to$ NLP       & \texttt{LEFT-ARC}     \\
+                $[$ROOT, presented, at, conference]           & []                                                     & conference $\to$ the       & \texttt{LEFT-ARC}     \\
+                $[$ROOT, presented, conference]               & []                                                     & conference $\to$ at        & \texttt{LEFT-ARC}     \\
+                $[$ROOT, presented]                           & []                                                     & presented $\to$ conference & \texttt{RIGHT-ARC}    \\
+                $[$ROOT]                                      & []                                                     & ROOT $\to$ presented       & \texttt{RIGHT-ARC}    \\
             \end{tabularx}\newline
         \end{adjustwidth}
     }
@@ -164,6 +164,15 @@ On each step, your parser will decide among the three transitions using a neural
               \end{itemize}
     \end{enumerate}
 
+    \ifans{
+        \begin{adjustwidth}{0cm}{}
+            \begin{tabular}{ c | c}
+                dev UAS & test UAS \\ \hline
+                88.54   & 88.64
+            \end{tabular}\newline
+        \end{adjustwidth}
+    }
+
 
     \part[12] We'd like to look at example dependency parses and understand where parsers like ours might be wrong. For example, in this sentence:
 
@@ -232,7 +241,40 @@ On each step, your parser will decide among the three transitions using a neural
 
     \input{dep_parses.tex}
 
+    \ifans{
+        \begin{enumerate}[label=\roman*.]
+            \item
+                  \begin{itemize}
+                      \item \textbf{Error type}: Verb Phrase Attachment Error
+                      \item \textbf{Incorrect dependency}: acquisition $\rightarrow$ citing
+                      \item \textbf{Correct dependency}: blocked $\rightarrow$ citing
+                  \end{itemize}
+            \item
+                  \begin{itemize}
+                      \item \textbf{Error type}: Modifier Attachment Error
+                      \item \textbf{Incorrect dependency}: elements $\rightarrow$ most
+                      \item \textbf{Correct dependency}: crucial $\rightarrow$ most
+                  \end{itemize}
+            \item
+                  \begin{itemize}
+                      \item \textbf{Error type}: Prepositional Phrase Attachment Error
+                      \item \textbf{Incorrect dependency}: declined $\rightarrow$ decision
+                      \item \textbf{Correct dependency}: reasons $\rightarrow$ decision
+                  \end{itemize}
+            \item
+                  \begin{itemize}
+                      \item \textbf{Error type}: Coordination Attachment Error
+                      \item \textbf{Incorrect dependency}: affects $\rightarrow$ one
+                      \item \textbf{Correct dependency}: plants $\rightarrow$ one
+                  \end{itemize}
+        \end{enumerate}
+    }
 
     \part[2] Recall in part (e), the parser uses features which includes words and their part-of-speech (POS) tags. Explain the benefit of using part-of-speech tags as features in the parser?
+
+    \ifans{
+
+        Part-of-speech (POS) tags offer valuable grammatical information for each word, aiding the dependency parser in grasping the syntactic structure of the sentence. By clarifying the grammatical role of words (e.g., verb, noun), POS tags help disambiguate words with multiple meanings in different contexts. Additionally, they enhance contextual understanding by enabling the parser to identify subjects, objects, modifers, and compound nouns, there by improving overall parsing accuracy.
+    }
 
 \end{parts}
